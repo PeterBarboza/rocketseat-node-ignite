@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid"
 
-export class Category {
+export class Specification {
   id?: string
   name: string
   description: string
