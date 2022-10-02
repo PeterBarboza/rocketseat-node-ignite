@@ -1,14 +1,23 @@
-import { Category } from "../models/Category"
+import { Category } from "../../models/Category"
 import {
   ICategoriesRepository,
   ICreateCategoryDTO,
-} from "./ICategoriesRepository"
+} from "../ICategoriesRepository"
 
 export class CategoriesRepository implements ICategoriesRepository {
   private categories: Category[]
 
-  constructor() {
+  private static INSTANCE: CategoriesRepository
+
+  private constructor() {
     this.categories = []
+  }
+
+  public static getInstance(): CategoriesRepository {
+    if (!CategoriesRepository.INSTANCE) {
+      CategoriesRepository.INSTANCE = new CategoriesRepository()
+    }
+    return CategoriesRepository.INSTANCE
   }
 
   findByName(name: string): Category {
@@ -25,6 +34,7 @@ export class CategoriesRepository implements ICategoriesRepository {
     Object.assign(category, {
       name,
       description,
+      created_at: new Date(),
     })
 
     this.categories.push(category)
