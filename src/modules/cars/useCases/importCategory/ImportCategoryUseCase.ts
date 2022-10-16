@@ -1,4 +1,4 @@
-import { createReadStream } from "fs";
+import { createReadStream, promises } from "fs";
 import { Parser } from "csv-parse";
 
 import { ICategoriesRepository } from "../../repositories/ICategoriesRepository";
@@ -29,7 +29,14 @@ export class ImportCategoryUseCase {
             description,
           });
         })
-        .on("end", () => resolve(categories))
+        .on("end", async () => {
+          try {
+            await promises.unlink(file.path);
+          } catch (error) {
+            console.error(error);
+          }
+          resolve(categories);
+        })
         .on("error", (error) => reject(error));
     });
   }
@@ -37,6 +44,15 @@ export class ImportCategoryUseCase {
   async execute(file: Express.Multer.File): Promise<void> {
     const categories = await this.loadCategories(file);
 
-    console.log(categories);
+    categories.map((category) => {
+      const existCategory = this.categoriesRepository.findByName(category.name);
+
+      if (!existCategory) {
+        this.categoriesRepository.create({
+          name: category.name,
+          description: category.description,
+        });
+      }
+    });
   }
 }
