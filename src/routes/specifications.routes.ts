@@ -1,9 +1,11 @@
-import { Router } from "express"
+import { Router } from "express";
 
-import { createSpecificationController } from "../modules/cars/useCases/createSpecification"
+import { CreateSpecificationController } from "../modules/cars/useCases/createSpecification/CreateSpecificationController";
 
-export const specificationsRoutes = Router()
+export const specificationsRoutes = Router();
+
+const createSpecificationController = new CreateSpecificationController();
 
 specificationsRoutes.post("/", (req, res) => {
-  createSpecificationController.handle(req, res)
-})
+  createSpecificationController.handle(req, res);
+});

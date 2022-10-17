@@ -4,10 +4,16 @@ import { CONFIG } from "../configs";
 
 export const AppDataSource = new DataSource(CONFIG.typeORM);
 
-AppDataSource.initialize()
-  .then(() => {
-    console.log("Data Source has been initialized!");
-  })
-  .catch((err) => {
-    console.error("Error during Data Source initialization", err);
-  });
+export async function initializeDatabase(): Promise<DataSource> {
+  try {
+    if (!AppDataSource.isInitialized) {
+      await AppDataSource.initialize();
+    }
+    return AppDataSource;
+  } catch (error) {
+    console.error(error);
+    return AppDataSource;
+  }
+}
+
+initializeDatabase();

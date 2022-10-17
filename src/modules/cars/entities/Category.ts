@@ -6,7 +6,7 @@ export class Category {
   @Column({ type: "uuid", primary: true })
   id?: string;
 
-  @CreateDateColumn({ type: "timestamp", default: "now()" })
+  @CreateDateColumn()
   created_at: Date;
 
   @Column({ type: "varchar" })

@@ -1,12 +1,14 @@
 import express from "express";
 import swaggerUI from "swagger-ui-express";
 import "dotenv/config";
+import "reflect-metadata";
 
 import { router } from "./routes";
 import { CONFIG } from "./configs";
-import "./database/data-source";
-
 import swaggerFile from "./swagger.json";
+
+import "./database/data-source";
+import "./shared/container";
 
 const app = express();
 const port = CONFIG.port;
