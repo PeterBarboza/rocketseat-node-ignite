@@ -17,5 +17,6 @@ const typeORM: DataSourceOptions = {
 
 export const CONFIG = {
   port: process.env.APP_PORT || 3000,
+  jwtSecret: process.env.JWT_SECRET,
   typeORM,
 };
