@@ -7,15 +7,10 @@ export class ImportCategoryController {
   async handle(req: Request, res: Response): Promise<any> {
     const { file } = req;
 
-    try {
-      const importCategoryUseCase = container.resolve(ImportCategoryUseCase);
+    const importCategoryUseCase = container.resolve(ImportCategoryUseCase);
 
-      await importCategoryUseCase.execute(file);
+    await importCategoryUseCase.execute(file);
 
-      return res.status(201).send();
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json(error);
-    }
+    return res.status(201).send();
   }
 }

@@ -4,6 +4,7 @@ import { sign } from "jsonwebtoken";
 
 import { IUsersRespository } from "../../repositories/IUsersRepository";
 import { CONFIG } from "../../../../configs";
+import { AppError } from "../../../../errors/AppError";
 
 interface IRequest {
   email: string;
@@ -29,13 +30,13 @@ export class AuthenticateUserUseCase {
     const user = await this.usersRespository.findByEmail(email);
 
     if (!user) {
-      throw new Error("Email or password incorrect!");
+      throw new AppError("Email or password incorrect!", 401);
     }
 
     const passwordMatch = await compare(password, user.password);
 
     if (!passwordMatch) {
-      throw new Error("Email or password incorrect!");
+      throw new AppError("Email or password incorrect!", 401);
     }
 
     const token = sign({}, CONFIG.jwtSecret, {
